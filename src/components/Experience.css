@@ -1,0 +1,72 @@
+.experience__list {
+  display: flex;
+  flex-direction: column;
+}
+
+.experience__item {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 24px;
+}
+
+.experience__marker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.experience__dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+  margin-top: 6px;
+  flex-shrink: 0;
+}
+
+.experience__line {
+  width: 2px;
+  flex: 1;
+  background: var(--border);
+  margin: 6px 0;
+}
+
+.experience__content {
+  padding-bottom: 48px;
+}
+
+.experience__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.experience__head h3 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.experience__duration {
+  font-size: 13px;
+  color: var(--accent);
+}
+
+.experience__company {
+  color: var(--text-muted);
+  font-weight: 600;
+  margin: 4px 0 14px;
+}
+
+.experience__content ul {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--text-muted);
+  line-height: 1.75;
+}
+
+.experience__content li {
+  margin-bottom: 6px;
+}

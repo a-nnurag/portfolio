@@ -1,0 +1,46 @@
+# Sveltia CMS configuration — the "write and publish" editor at /admin.
+#
+# Setup checklist (see README.md "Setting up the blog editor" for full steps):
+#   1. Push this project to a GitHub repo and fill in `repo:` below.
+#   2. Deploy the OAuth relay (sveltia-cms-auth) and fill in `base_url:` below.
+#   3. Create a GitHub OAuth App pointing its callback at `<base_url>/callback`.
+
+backend:
+  name: github
+  repo: a-nnurag/portfolio # TODO: replace with your actual "owner/repo-name" on GitHub
+  branch: main
+  base_url: https://REPLACE-ME.workers.dev # TODO: your deployed sveltia-cms-auth worker URL
+
+# Where uploaded images are committed to, and the URL path they're served from.
+media_folder: public/blog/images/uploads
+public_folder: /blog/images/uploads
+
+collections:
+  - name: blog
+    label: Blog Posts
+    folder: src/content/blog
+    create: true
+    slug: '{{slug}}'
+    format: frontmatter
+    extension: md
+    fields:
+      - { label: Title, name: title, widget: string }
+      - label: Publish Date
+        name: date
+        widget: datetime
+        format: 'YYYY-MM-DD'
+        date_format: 'YYYY-MM-DD'
+        time_format: false
+      - label: Excerpt
+        name: excerpt
+        widget: text
+        hint: Shown on the blog card and in previews — one or two sentences.
+      - { label: Cover Image, name: cover, widget: image, required: false }
+      - { label: Tags, name: tags, widget: list, required: false }
+      - label: Draft
+        name: draft
+        widget: boolean
+        default: false
+        required: false
+        hint: Hide this post from the site while you're still writing it.
+      - { label: Body, name: body, widget: markdown }

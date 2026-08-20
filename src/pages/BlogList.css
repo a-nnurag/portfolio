@@ -1,0 +1,19 @@
+.blog-list {
+  padding: 140px 0 100px;
+  min-height: 100svh;
+}
+
+.blog-list__grid {
+  margin-top: 48px;
+}
+
+.blog-list__back {
+  display: inline-block;
+  margin-top: 56px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.blog-list__back:hover {
+  color: var(--accent);
+}

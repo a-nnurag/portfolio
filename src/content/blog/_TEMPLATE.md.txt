@@ -1,0 +1,31 @@
+---
+title: Your Post Title Here
+date: 2026-08-20
+excerpt: One or two sentences shown on the blog card and in previews.
+cover: /blog/images/your-post-slug/cover.jpg
+tags: [AI, Backend]
+---
+
+Write your post in normal Markdown here.
+
+## A heading
+
+Regular paragraph text. **Bold**, *italic*, and `inline code` all work.
+
+Add an image by dropping the file in `public/blog/images/your-post-slug/` and
+referencing it with a root-relative path:
+
+![A caption describing the image](/blog/images/your-post-slug/diagram.png)
+
+- Bullet
+- Points
+- Work too
+
+> Blockquotes for callouts.
+
+```js
+// Code blocks are syntax-highlighted-ready (monospace + themed background)
+function example() {
+  return true
+}
+```

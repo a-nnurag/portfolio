@@ -11,17 +11,9 @@ your own GitHub/Vercel/Cloudflare accounts). None of it needs touching again aft
 
 ## 1. Push this project to GitHub
 
-If you haven't already:
-
-```bash
-git init
-git add .
-git commit -m "Initial commit"
-git branch -M main
-```
-
-Create a new repo at [github.com/new](https://github.com/new) (call it whatever you like, e.g.
-`portfolio`), then:
+This project is already a git repo with an initial commit on `main`. Create a new (empty) repo at
+[github.com/new](https://github.com/new) — call it whatever you like, e.g. `portfolio`, and **don't**
+initialize it with a README/`.gitignore` (it needs to stay empty for the push below to work) — then:
 
 ```bash
 git remote add origin https://github.com/a-nnurag/YOUR-REPO-NAME.git

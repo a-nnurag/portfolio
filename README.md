@@ -39,9 +39,10 @@ section updates automatically.
 There are two ways to publish a post — same underlying files, use whichever's convenient:
 
 **Option A — the editor at `/admin`** (recommended): a real writing page with image upload, built on
-[Sveltia CMS](https://github.com/sveltia/sveltia-cms). Needs a one-time setup (GitHub OAuth + a free
-Cloudflare relay) before it works — see **[CMS_SETUP.md](CMS_SETUP.md)** for the full walkthrough.
-Once set up, publishing there commits directly to your repo and your site redeploys automatically.
+[Sveltia CMS](https://github.com/sveltia/sveltia-cms). Needs a one-time setup (deploy to Netlify +
+connect a GitHub OAuth App) before it works — see **[CMS_SETUP.md](CMS_SETUP.md)** for the full
+walkthrough. Once set up, publishing there commits directly to your repo and your site redeploys
+automatically.
 
 **Option B — by hand**: posts are plain Markdown files in [`src/content/blog/`](src/content/blog/),
 no setup required.
@@ -61,16 +62,20 @@ gallery.
 
 ## Deploying
 
-Any static host works — the app builds to plain HTML/CSS/JS in `dist/`. Because this site uses
-client-side routing (`/blog`, `/blog/:slug`), the host needs to serve `index.html` for unknown paths
-too — that's already configured for these:
+**Netlify** is what this site is set up for (see [CMS_SETUP.md](CMS_SETUP.md) — it's also what makes
+the `/admin` blog editor work with zero extra backend). Connect the repo at
+[app.netlify.com](https://app.netlify.com); `public/_redirects` already handles routing for `/blog`
+and `/admin`.
 
-- **Vercel**: `vercel` (auto-detects Vite; `vercel.json` already has the SPA rewrite)
-- **Netlify**: drag-and-drop the `dist/` folder, or connect the repo (`public/_redirects` already
-  handles the SPA fallback)
+Any other static host works too for the site itself (`dist/` is plain HTML/CSS/JS) — just note the
+`/admin` editor's login specifically depends on Netlify's built-in OAuth support, so switching hosts
+means switching to the Cloudflare Worker relay instead (documented at the bottom of
+[CMS_SETUP.md](CMS_SETUP.md)):
+
+- **Vercel**: `vercel` (auto-detects Vite; `vercel.json` already has the SPA rewrite, with `/admin`
+  excluded so it isn't swallowed by it)
 - **GitHub Pages**: needs one extra manual step since it has no server-side rewrites — build, then
-  follow the [spa-github-pages](https://github.com/rafgraph/spa-github-pages) 404.html trick, or
-  simplest of all, deploy to Vercel/Netlify instead (both are free and zero-config here).
+  follow the [spa-github-pages](https://github.com/rafgraph/spa-github-pages) 404.html trick.
 
 ## Notes
 

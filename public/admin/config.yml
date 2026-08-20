@@ -1,15 +1,17 @@
 # Sveltia CMS configuration — the "write and publish" editor at /admin.
 #
-# Setup checklist (see README.md "Setting up the blog editor" for full steps):
-#   1. Push this project to a GitHub repo and fill in `repo:` below.
-#   2. Deploy the OAuth relay (sveltia-cms-auth) and fill in `base_url:` below.
-#   3. Create a GitHub OAuth App pointing its callback at `<base_url>/callback`.
+# Setup checklist (see CMS_SETUP.md for full steps):
+#   1. Deploy this repo to Netlify.
+#   2. Create a GitHub OAuth App with callback URL https://api.netlify.com/auth/done
+#   3. In Netlify: Project configuration > Access & security > OAuth > Install Provider (GitHub),
+#      paste the Client ID + Client Secret from step 2.
+# That's it — Netlify handles the login popup itself, no separate relay to deploy.
 
 backend:
   name: github
-  repo: a-nnurag/portfolio # TODO: replace with your actual "owner/repo-name" on GitHub
+  repo: a-nnurag/portfolio
   branch: main
-  base_url: https://REPLACE-ME.workers.dev # TODO: your deployed sveltia-cms-auth worker URL
+  base_url: https://api.netlify.com
 
 # Where uploaded images are committed to, and the URL path they're served from.
 media_folder: public/blog/images/uploads

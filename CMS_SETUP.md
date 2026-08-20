@@ -7,76 +7,48 @@ GitHub repo, which triggers a normal redeploy. Your site is usually live with th
 30–60 seconds.
 
 Because it writes to your GitHub repo, this needs one-time setup that only you can do (it requires
-your own GitHub/Vercel/Cloudflare accounts). None of it needs touching again after today.
+your own GitHub and Netlify accounts). None of it needs touching again after today.
 
-## 1. Push this project to GitHub
+Your repo is already pushed to [github.com/a-nnurag/portfolio](https://github.com/a-nnurag/portfolio),
+so you're starting from step 1 below.
 
-This project is already a git repo with an initial commit on `main`. Create a new (empty) repo at
-[github.com/new](https://github.com/new) — call it whatever you like, e.g. `portfolio`, and **don't**
-initialize it with a README/`.gitignore` (it needs to stay empty for the push below to work) — then:
+## 1. Deploy to Netlify
 
-```bash
-git remote add origin https://github.com/a-nnurag/YOUR-REPO-NAME.git
-git push -u origin main
-```
+- [app.netlify.com](https://app.netlify.com) → **Add new site** → **Import an existing project** →
+  connect GitHub → pick the `portfolio` repo → Deploy (it auto-detects Vite, no config needed;
+  `public/_redirects` already handles routing for `/blog` and `/admin`).
+- Note the URL Netlify gives you, e.g. `https://your-portfolio.netlify.app` (you can rename this or
+  add a custom domain later in **Site configuration → Domain management**).
 
-## 2. Deploy to Vercel
-
-- [vercel.com](https://vercel.com) → New Project → import the GitHub repo you just created → Deploy
-  (it auto-detects Vite, no config needed).
-- Note the URL Vercel gives you, e.g. `https://your-portfolio.vercel.app`.
-
-## 3. Deploy the OAuth relay (one-time, free)
-
-The editor needs a tiny middleman to let GitHub confirm "yes, this is really the repo owner" —
-Sveltia provides an official one that runs free on Cloudflare's free tier.
-
-- Go to [github.com/sveltia/sveltia-cms-auth](https://github.com/sveltia/sveltia-cms-auth) and use
-  its "Deploy to Cloudflare Workers" button (needs a free Cloudflare account).
-- After it deploys, copy the Worker URL, e.g. `https://sveltia-cms-auth.YOUR-NAME.workers.dev`.
-
-## 4. Create a GitHub OAuth App
+## 2. Create a GitHub OAuth App
 
 - Go to [github.com/settings/developers](https://github.com/settings/developers) → **OAuth Apps** →
   **New OAuth App**.
 - **Application name**: anything, e.g. "Portfolio CMS"
-- **Homepage URL**: your Vercel URL from step 2
-- **Authorization callback URL**: `<your worker URL from step 3>/callback`
-- Register the app, then click **Generate a new client secret**. Copy both the **Client ID** and
-  **Client Secret** — you'll need them in the next step.
+- **Homepage URL**: your Netlify URL from step 1
+- **Authorization callback URL**: `https://api.netlify.com/auth/done` (exactly this — it's Netlify's
+  own URL, not your site's)
+- Click **Register application**, then click **Generate a new client secret**. Keep this tab open —
+  you need both the **Client ID** and **Client Secret** in the next step.
 
-## 5. Add the OAuth credentials to the Worker
+## 3. Connect that OAuth App to Netlify
 
-- In the Cloudflare dashboard: **Workers & Pages** → your worker → **Settings** → **Variables**.
-- Add:
-  - `GITHUB_CLIENT_ID` = the Client ID from step 4
-  - `GITHUB_CLIENT_SECRET` = the Client Secret from step 4 (encrypt it)
-  - `ALLOWED_DOMAINS` = your Vercel domain, e.g. `your-portfolio.vercel.app` (recommended — restricts
-    the relay to only your own site)
+- In your Netlify site: **Project configuration → Access & security → OAuth**.
+- Under **Authentication Providers**, click **Install provider**, choose **GitHub**, and paste in the
+  Client ID and Client Secret from step 2. Save.
 
-## 6. Point this repo's config at your real values
+That's it — no separate relay or worker to deploy. Netlify handles the "Log in with GitHub" popup
+itself from here on.
 
-Edit [`public/admin/config.yml`](public/admin/config.yml):
+## 4. Write your first post
 
-```yaml
-backend:
-  name: github
-  repo: a-nnurag/YOUR-REPO-NAME # from step 1
-  branch: main
-  base_url: https://sveltia-cms-auth.YOUR-NAME.workers.dev # from step 3
-```
-
-Commit and push — Vercel redeploys automatically.
-
-## 7. Write your first post
-
-Visit `https://your-portfolio.vercel.app/admin`, click **Log in with GitHub**, authorize the app,
+Visit `https://your-portfolio.netlify.app/admin`, click **Log in with GitHub**, authorize the app,
 and you'll see the "Blog Posts" collection with a **New Blog Posts** button. Fill in the title,
 date, excerpt, drag in a cover image, write the body, hit **Publish** — it commits directly to your
 repo and your site redeploys with the new post live.
 
 **Note**: because it's GitHub OAuth tied to your repo, only accounts with push access to your repo
-(i.e., you) can actually publish — this is safe even though your repo can be public.
+(i.e., you) can actually publish — this is safe even though your repo is public.
 
 ---
 
@@ -88,3 +60,11 @@ You can still add posts the old way too (copying
 [`src/content/blog/_TEMPLATE.md.txt`](src/content/blog/_TEMPLATE.md.txt) and committing by hand) —
 the editor and manual files both write to the exact same `src/content/blog/` folder, so they're
 fully interchangeable.
+
+## If you switch hosts later
+
+`public/admin/config.yml`'s `base_url: https://api.netlify.com` only works while the site is hosted
+on Netlify. If you move to Vercel, GitHub Pages, or anywhere else, you'll need the Cloudflare Worker
+relay approach instead — see [github.com/sveltia/sveltia-cms-auth](https://github.com/sveltia/sveltia-cms-auth)
+and swap `base_url` to the Worker URL it gives you (same OAuth App from step 2 above, just change its
+callback URL to `<worker-url>/callback`).

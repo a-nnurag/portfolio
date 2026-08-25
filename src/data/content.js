@@ -17,7 +17,7 @@ export const profile = {
   githubUser: 'a-nnurag',
   linkedin: 'https://www.linkedin.com/in/anurag-chaurasia-5b9409263/',
   leetcodeRating: '1700+',
-  resumeUrl: '/AnuragChaurasia_Resume.pdf',
+  resumeUrl: '/AnuragResume.pdf',
 }
 
 export const education = {
